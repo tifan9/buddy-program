@@ -2,132 +2,117 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useToast } from "@/hooks/use-toast"
+import Image from "next/image"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const { toast } = useToast()
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  })
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-      toast({
-        title: "Welcome back!",
-        description: "You've been successfully logged in.",
-      })
-      // Check if profile is complete - for demo, redirect to onboarding
-      router.push("/onboarding")
-    }, 1000)
+    // Handle login logic here
+    console.log("Login attempt:", formData)
   }
 
   const handleGoogleLogin = () => {
-    toast({
-      title: "Google Login",
-      description: "Google OAuth integration would be implemented here.",
-    })
+    // Handle Google OAuth login
+    console.log("Google login")
   }
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Column - Motivational */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary/80 p-12 text-white flex-col justify-center">
-        <div className="max-w-md">
+      {/* Left Column - Motivational Content */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-12 flex-col justify-center">
+        <div className="max-w-md mx-auto text-center">
           <div className="mb-8">
-            <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6">
-              <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-            </div>
-            <h1 className="text-4xl font-bold mb-4">
-              Small steps daily = big changes.
-            </h1>
-            <p className="text-xl text-white/90">
-              Connect with accountability partners and achieve your goals together. 
-              Start your journey today.
-            </p>
+            <Image
+              src="/placeholder.svg?height=200&width=200&text=Motivation"
+              alt="Motivational illustration"
+              width={200}
+              height={200}
+              className="mx-auto mb-6"
+            />
           </div>
-          <div className="space-y-4 text-white/80">
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>Set weekly goals with your buddy</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>Track daily progress together</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>Stay motivated with check-ins</span>
-            </div>
-          </div>
+          <blockquote className="text-2xl font-semibold mb-4">
+            "Small steps daily = big changes."
+          </blockquote>
+          <p className="text-lg opacity-90">
+            Join thousands of people achieving their goals with accountability partners.
+          </p>
         </div>
       </div>
 
-      {/* Right Column - Auth Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      {/* Right Column - Login Form */}
+      <div className="flex-1 flex items-center justify-center p-8">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Welcome Back</CardTitle>
+            <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
             <CardDescription>
-              Sign in to your accountability journey
+              Sign in to your AccountaBuddy account
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <form onSubmit={handleLogin} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="pl-10"
+                    required
+                  />
+                </div>
               </div>
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    className="pl-10 pr-10"
                     required
                   />
-                  <Button
+                  <button
                     type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-4 w-4 text-muted-foreground" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
-                  </Button>
+                  </button>
                 </div>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign In"}
+
+              <div className="flex items-center justify-between">
+                <Link href="/auth/forgot-password" className="text-sm text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+
+              <Button type="submit" className="w-full">
+                Sign In
               </Button>
             </form>
 
@@ -144,8 +129,8 @@ export default function LoginPage() {
 
             <Button
               variant="outline"
-              className="w-full"
               onClick={handleGoogleLogin}
+              className="w-full"
             >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -169,7 +154,7 @@ export default function LoginPage() {
             </Button>
 
             <div className="text-center text-sm">
-              <span className="text-muted-foreground">Don't have an account? </span>
+              Don't have an account?{" "}
               <Link href="/auth/signup" className="text-primary hover:underline">
                 Sign up
               </Link>

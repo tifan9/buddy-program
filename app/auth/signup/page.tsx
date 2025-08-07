@@ -2,154 +2,187 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Eye, EyeOff } from 'lucide-react'
+import { Checkbox } from "@/components/ui/checkbox"
+import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useToast } from "@/hooks/use-toast"
+import Image from "next/image"
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    agreeToTerms: false
   })
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const { toast } = useToast()
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
     if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Error",
-        description: "Passwords don't match.",
-        variant: "destructive"
-      })
+      alert("Passwords don't match!")
       return
     }
-
-    setIsLoading(true)
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-      toast({
-        title: "Account created!",
-        description: "Welcome to your accountability journey.",
-      })
-      router.push("/onboarding")
-    }, 1000)
+    if (!formData.agreeToTerms) {
+      alert("Please agree to the terms and conditions")
+      return
+    }
+    // Handle signup logic here
+    console.log("Signup attempt:", formData)
   }
 
-  const handleGoogleSignUp = () => {
-    toast({
-      title: "Google Sign Up",
-      description: "Google OAuth integration would be implemented here.",
-    })
+  const handleGoogleSignup = () => {
+    // Handle Google OAuth signup
+    console.log("Google signup")
   }
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Column - Motivational */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary/80 p-12 text-white flex-col justify-center">
-        <div className="max-w-md">
+      {/* Left Column - Motivational Content */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-12 flex-col justify-center">
+        <div className="max-w-md mx-auto text-center">
           <div className="mb-8">
-            <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6">
-              <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2.01.99l-2.54 3.4c-.74.99-.74 2.31 0 3.3l1.54 2.05c.44.58 1.06.95 1.74 1.05L16 22h4zm-12.5 0v-7.5h-3A1.5 1.5 0 0 1 3 13V9.5A1.5 1.5 0 0 1 4.5 8h3c.83 0 1.5.67 1.5 1.5V13c0 .83-.67 1.5-1.5 1.5H6v7.5h1.5z"/>
-              </svg>
-            </div>
-            <h1 className="text-4xl font-bold mb-4">
-              Start your journey today.
-            </h1>
-            <p className="text-xl text-white/90">
-              Join thousands of people achieving their goals with accountability partners.
-            </p>
+            <Image
+              src="/placeholder.svg?height=200&width=200&text=Success"
+              alt="Success illustration"
+              width={200}
+              height={200}
+              className="mx-auto mb-6"
+            />
           </div>
-          <div className="space-y-4 text-white/80">
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>Get matched with like-minded partners</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>Build lasting habits together</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>Celebrate achievements as a team</span>
-            </div>
-          </div>
+          <blockquote className="text-2xl font-semibold mb-4">
+            "Small steps daily = big changes."
+          </blockquote>
+          <p className="text-lg opacity-90">
+            Start your accountability journey today and achieve your goals with a dedicated partner.
+          </p>
         </div>
       </div>
 
-      {/* Right Column - Auth Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      {/* Right Column - Signup Form */}
+      <div className="flex-1 flex items-center justify-center p-8">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Create Account</CardTitle>
+            <CardTitle className="text-2xl font-bold">Create your account</CardTitle>
             <CardDescription>
-              Start your accountability journey today
+              Join AccountaBuddy and start achieving your goals
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <form onSubmit={handleSignUp} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  required
-                />
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="pl-10"
+                    required
+                  />
+                </div>
               </div>
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a password"
                     value={formData.password}
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    className="pl-10 pr-10"
                     required
                   />
-                  <Button
+                  <button
                     type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-4 w-4 text-muted-foreground" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
-                  </Button>
+                  </button>
                 </div>
               </div>
+
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                  required
-                />
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                    className="pl-10 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </button>
+                </div>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating account..." : "Create Account"}
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terms"
+                  checked={formData.agreeToTerms}
+                  onCheckedChange={(checked) => 
+                    setFormData({...formData, agreeToTerms: checked as boolean})
+                  }
+                />
+                <Label htmlFor="terms" className="text-sm">
+                  I agree to the{" "}
+                  <Link href="/terms" className="text-primary hover:underline">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" className="text-primary hover:underline">
+                    Privacy Policy
+                  </Link>
+                </Label>
+              </div>
+
+              <Button type="submit" className="w-full">
+                Create Account
               </Button>
             </form>
 
@@ -166,8 +199,8 @@ export default function SignUpPage() {
 
             <Button
               variant="outline"
+              onClick={handleGoogleSignup}
               className="w-full"
-              onClick={handleGoogleSignUp}
             >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -191,7 +224,7 @@ export default function SignUpPage() {
             </Button>
 
             <div className="text-center text-sm">
-              <span className="text-muted-foreground">Already have an account? </span>
+              Already have an account?{" "}
               <Link href="/auth/login" className="text-primary hover:underline">
                 Sign in
               </Link>

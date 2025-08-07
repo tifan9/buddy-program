@@ -5,106 +5,58 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Badge } from "@/components/ui/badge"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Switch } from "@/components/ui/switch"
+import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Settings, User, Bell, Shield, Trash2, Upload } from 'lucide-react'
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Separator } from "@/components/ui/separator"
+import { Settings, User, Bell, Shield, Trash2, Save } from 'lucide-react'
 import { useToast } from "@/hooks/use-toast"
 
-const TIMEZONES = [
-  "UTC-12:00 (Baker Island)",
-  "UTC-11:00 (American Samoa)",
-  "UTC-10:00 (Hawaii)",
-  "UTC-09:00 (Alaska)",
-  "UTC-08:00 (Pacific Time)",
-  "UTC-07:00 (Mountain Time)",
-  "UTC-06:00 (Central Time)",
-  "UTC-05:00 (Eastern Time)",
-  "UTC-04:00 (Atlantic Time)",
-  "UTC+00:00 (London)",
-  "UTC+01:00 (Central Europe)",
-  "UTC+08:00 (Singapore)",
-  "UTC+09:00 (Japan)",
-]
-
-const AVAILABILITY_OPTIONS = [
-  "Monday Morning", "Monday Evening",
-  "Tuesday Morning", "Tuesday Evening",
-  "Wednesday Morning", "Wednesday Evening",
-  "Thursday Morning", "Thursday Evening",
-  "Friday Morning", "Friday Evening",
-  "Saturday Morning", "Saturday Evening",
-  "Sunday Morning", "Sunday Evening"
-]
-
 export default function SettingsPage() {
-  const [profileData, setProfileData] = useState({
+  const { toast } = useToast()
+  const [settings, setSettings] = useState({
+    // Profile Settings
     fullName: "John Doe",
     email: "john.doe@example.com",
-    bio: "Passionate about fitness and personal development. Looking to build consistent habits with an accountability partner.",
-    timezone: "UTC-05:00 (Eastern Time)",
-    availability: ["Monday Evening", "Wednesday Evening", "Friday Evening"],
-    communicationMethod: "video",
-    anonymousPairing: false
-  })
-
-  const [notifications, setNotifications] = useState({
-    goalReminders: true,
-    buddyMessages: true,
-    checkInReminders: true,
+    timezone: "UTC-05:00",
+    bio: "Focused on building healthy habits and staying productive.",
+    
+    // Notification Settings
+    emailNotifications: true,
+    pushNotifications: true,
     weeklyReports: true,
-    badgeEarned: true,
-    emailNotifications: true
+    buddyReminders: true,
+    
+    // Privacy Settings
+    profileVisibility: "buddies", // public, buddies, private
+    showProgress: true,
+    anonymousMode: false,
+    
+    // Communication Settings
+    communicationMethod: "video",
+    availability: ["Monday", "Wednesday", "Friday"],
+    preferredTime: "19:00"
   })
 
-  const [privacy, setPrivacy] = useState({
-    profileVisibility: "buddy",
-    shareProgress: true,
-    allowMatching: true
-  })
-
-  const { toast } = useToast()
-
-  const handleSaveProfile = () => {
+  const handleSave = () => {
+    // Save settings logic here
     toast({
-      title: "Profile updated!",
-      description: "Your profile settings have been saved successfully.",
+      title: "Settings saved!",
+      description: "Your preferences have been updated successfully.",
     })
-  }
-
-  const handleSaveNotifications = () => {
-    toast({
-      title: "Notification preferences updated!",
-      description: "Your notification settings have been saved.",
-    })
-  }
-
-  const handleSavePrivacy = () => {
-    toast({
-      title: "Privacy settings updated!",
-      description: "Your privacy preferences have been saved.",
-    })
-  }
-
-  const handleAvailabilityToggle = (option: string) => {
-    setProfileData(prev => ({
-      ...prev,
-      availability: prev.availability.includes(option)
-        ? prev.availability.filter(item => item !== option)
-        : [...prev.availability, option]
-    }))
   }
 
   const handleDeleteAccount = () => {
-    toast({
-      title: "Account deletion requested",
-      description: "This feature would be implemented with proper confirmation flow.",
-      variant: "destructive"
-    })
+    // Delete account logic here
+    if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      toast({
+        title: "Account deletion requested",
+        description: "Your account will be deleted within 24 hours.",
+        variant: "destructive"
+      })
+    }
   }
 
   return (
@@ -121,6 +73,10 @@ export default function SettingsPage() {
             <p className="text-muted-foreground">Manage your account and preferences</p>
           </div>
         </div>
+        <Button onClick={handleSave}>
+          <Save className="h-4 w-4 mr-2" />
+          Save Changes
+        </Button>
       </header>
 
       {/* Main Content */}
@@ -133,19 +89,17 @@ export default function SettingsPage() {
               <span>Profile Settings</span>
             </CardTitle>
             <CardDescription>
-              Update your personal information and preferences
+              Update your personal information and profile details
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Profile Picture */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               <Avatar className="w-20 h-20">
                 <AvatarImage src="/placeholder.svg?height=80&width=80" />
                 <AvatarFallback className="text-lg">JD</AvatarFallback>
               </Avatar>
               <div>
                 <Button variant="outline" size="sm">
-                  <Upload className="h-4 w-4 mr-2" />
                   Change Photo
                 </Button>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -154,108 +108,53 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="fullName">Full Name</Label>
                 <Input
                   id="fullName"
-                  value={profileData.fullName}
-                  onChange={(e) => setProfileData({...profileData, fullName: e.target.value})}
+                  value={settings.fullName}
+                  onChange={(e) => setSettings({...settings, fullName: e.target.value})}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
-                  value={profileData.email}
-                  onChange={(e) => setProfileData({...profileData, email: e.target.value})}
+                  value={settings.email}
+                  onChange={(e) => setSettings({...settings, email: e.target.value})}
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="timezone">Timezone</Label>
+              <Select value={settings.timezone} onValueChange={(value) => setSettings({...settings, timezone: value})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="UTC-08:00">Pacific Time (UTC-8)</SelectItem>
+                  <SelectItem value="UTC-07:00">Mountain Time (UTC-7)</SelectItem>
+                  <SelectItem value="UTC-06:00">Central Time (UTC-6)</SelectItem>
+                  <SelectItem value="UTC-05:00">Eastern Time (UTC-5)</SelectItem>
+                  <SelectItem value="UTC+00:00">GMT (UTC+0)</SelectItem>
+                  <SelectItem value="UTC+01:00">Central European Time (UTC+1)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea
                 id="bio"
-                placeholder="Tell your buddy a bit about yourself and your goals..."
-                value={profileData.bio}
-                onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                placeholder="Tell your accountability buddy about yourself..."
+                value={settings.bio}
+                onChange={(e) => setSettings({...settings, bio: e.target.value})}
                 rows={3}
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="timezone">Timezone</Label>
-              <Select value={profileData.timezone} onValueChange={(value) => setProfileData({...profileData, timezone: value})}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {TIMEZONES.map((tz) => (
-                    <SelectItem key={tz} value={tz}>
-                      {tz}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-4">
-              <Label>Weekly Availability</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {AVAILABILITY_OPTIONS.map((option) => (
-                  <Button
-                    key={option}
-                    variant={profileData.availability.includes(option) ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => handleAvailabilityToggle(option)}
-                    className="justify-start"
-                  >
-                    {option}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <Label>Preferred Communication Method</Label>
-              <RadioGroup
-                value={profileData.communicationMethod}
-                onValueChange={(value) => setProfileData({...profileData, communicationMethod: value})}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="text" id="text" />
-                  <Label htmlFor="text">Text Messages</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="call" id="call" />
-                  <Label htmlFor="call">Phone Calls</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="video" id="video" />
-                  <Label htmlFor="video">Video Calls</Label>
-                </div>
-              </RadioGroup>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="anonymous">Anonymous Pairing</Label>
-                <p className="text-sm text-muted-foreground">
-                  Your buddy will only see your first name and goals
-                </p>
-              </div>
-              <Switch
-                id="anonymous"
-                checked={profileData.anonymousPairing}
-                onCheckedChange={(checked) => setProfileData({...profileData, anonymousPairing: checked})}
-              />
-            </div>
-
-            <Button onClick={handleSaveProfile}>
-              Save Profile Changes
-            </Button>
           </CardContent>
         </Card>
 
@@ -264,96 +163,70 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Bell className="h-5 w-5" />
-              <span>Notification Settings</span>
+              <span>Notifications</span>
             </CardTitle>
             <CardDescription>
-              Choose what notifications you'd like to receive
+              Choose what notifications you want to receive
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Goal Reminders</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Daily reminders to complete your goals
-                  </p>
-                </div>
-                <Switch
-                  checked={notifications.goalReminders}
-                  onCheckedChange={(checked) => setNotifications({...notifications, goalReminders: checked})}
-                />
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Email Notifications</Label>
+                <p className="text-sm text-muted-foreground">
+                  Receive email updates about your goals and buddy activities
+                </p>
               </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Buddy Messages</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Messages from your accountability buddy
-                  </p>
-                </div>
-                <Switch
-                  checked={notifications.buddyMessages}
-                  onCheckedChange={(checked) => setNotifications({...notifications, buddyMessages: checked})}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Check-in Reminders</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Reminders for scheduled buddy check-ins
-                  </p>
-                </div>
-                <Switch
-                  checked={notifications.checkInReminders}
-                  onCheckedChange={(checked) => setNotifications({...notifications, checkInReminders: checked})}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Weekly Reports</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Weekly progress summaries
-                  </p>
-                </div>
-                <Switch
-                  checked={notifications.weeklyReports}
-                  onCheckedChange={(checked) => setNotifications({...notifications, weeklyReports: checked})}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Badge Earned</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Notifications when you earn new badges
-                  </p>
-                </div>
-                <Switch
-                  checked={notifications.badgeEarned}
-                  onCheckedChange={(checked) => setNotifications({...notifications, badgeEarned: checked})}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Email Notifications</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Receive notifications via email
-                  </p>
-                </div>
-                <Switch
-                  checked={notifications.emailNotifications}
-                  onCheckedChange={(checked) => setNotifications({...notifications, emailNotifications: checked})}
-                />
-              </div>
+              <Switch
+                checked={settings.emailNotifications}
+                onCheckedChange={(checked) => setSettings({...settings, emailNotifications: checked})}
+              />
             </div>
 
-            <Button onClick={handleSaveNotifications}>
-              Save Notification Settings
-            </Button>
+            <Separator />
+
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Push Notifications</Label>
+                <p className="text-sm text-muted-foreground">
+                  Get browser notifications for important updates
+                </p>
+              </div>
+              <Switch
+                checked={settings.pushNotifications}
+                onCheckedChange={(checked) => setSettings({...settings, pushNotifications: checked})}
+              />
+            </div>
+
+            <Separator />
+
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Weekly Reports</Label>
+                <p className="text-sm text-muted-foreground">
+                  Receive weekly progress summaries
+                </p>
+              </div>
+              <Switch
+                checked={settings.weeklyReports}
+                onCheckedChange={(checked) => setSettings({...settings, weeklyReports: checked})}
+              />
+            </div>
+
+            <Separator />
+
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Buddy Reminders</Label>
+                <p className="text-sm text-muted-foreground">
+                  Get reminded about check-ins with your accountability buddy
+                </p>
+              </div>
+              <Switch
+                checked={settings.buddyReminders}
+                onCheckedChange={(checked) => setSettings({...settings, buddyReminders: checked})}
+              />
+            </div>
           </CardContent>
         </Card>
 
@@ -362,81 +235,112 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Shield className="h-5 w-5" />
-              <span>Privacy Settings</span>
+              <span>Privacy & Security</span>
             </CardTitle>
             <CardDescription>
-              Control your privacy and data sharing preferences
+              Control your privacy and security preferences
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Profile Visibility</Label>
-                <Select value={privacy.profileVisibility} onValueChange={(value) => setPrivacy({...privacy, profileVisibility: value})}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="public">Public - Anyone can see</SelectItem>
-                    <SelectItem value="buddy">Buddy Only - Only your accountability buddy</SelectItem>
-                    <SelectItem value="private">Private - No one can see</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Share Progress Data</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Allow your buddy to see your detailed progress
-                  </p>
-                </div>
-                <Switch
-                  checked={privacy.shareProgress}
-                  onCheckedChange={(checked) => setPrivacy({...privacy, shareProgress: checked})}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Allow New Matches</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Allow the system to match you with new buddies
-                  </p>
-                </div>
-                <Switch
-                  checked={privacy.allowMatching}
-                  onCheckedChange={(checked) => setPrivacy({...privacy, allowMatching: checked})}
-                />
-              </div>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Profile Visibility</Label>
+              <Select value={settings.profileVisibility} onValueChange={(value) => setSettings({...settings, profileVisibility: value})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="public">Public - Anyone can see your profile</SelectItem>
+                  <SelectItem value="buddies">Buddies Only - Only your accountability partners</SelectItem>
+                  <SelectItem value="private">Private - Only you can see your profile</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            <Button onClick={handleSavePrivacy}>
-              Save Privacy Settings
-            </Button>
+            <Separator />
+
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Show Progress to Buddies</Label>
+                <p className="text-sm text-muted-foreground">
+                  Allow your accountability partners to see your goal progress
+                </p>
+              </div>
+              <Switch
+                checked={settings.showProgress}
+                onCheckedChange={(checked) => setSettings({...settings, showProgress: checked})}
+              />
+            </div>
+
+            <Separator />
+
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Anonymous Mode</Label>
+                <p className="text-sm text-muted-foreground">
+                  Hide your full name and show only first name + initial
+                </p>
+              </div>
+              <Switch
+                checked={settings.anonymousMode}
+                onCheckedChange={(checked) => setSettings({...settings, anonymousMode: checked})}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Communication Preferences */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Communication Preferences</CardTitle>
+            <CardDescription>
+              Update how you prefer to communicate with your accountability buddy
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Preferred Communication Method</Label>
+              <Select value={settings.communicationMethod} onValueChange={(value) => setSettings({...settings, communicationMethod: value})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="text">Text Messages</SelectItem>
+                  <SelectItem value="call">Voice Calls</SelectItem>
+                  <SelectItem value="video">Video Calls</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Preferred Check-in Time</Label>
+              <Input
+                type="time"
+                value={settings.preferredTime}
+                onChange={(e) => setSettings({...settings, preferredTime: e.target.value})}
+              />
+            </div>
           </CardContent>
         </Card>
 
         {/* Danger Zone */}
-        <Card className="border-red-200">
+        <Card className="border-destructive">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-red-600">
-              <Trash2 className="h-5 w-5" />
-              <span>Danger Zone</span>
-            </CardTitle>
+            <CardTitle className="text-destructive">Danger Zone</CardTitle>
             <CardDescription>
-              Irreversible actions that will affect your account
+              Irreversible and destructive actions
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 border border-red-200 rounded-lg bg-red-50">
-              <h3 className="font-medium text-red-800 mb-2">Delete Account</h3>
-              <p className="text-sm text-red-700 mb-4">
-                Once you delete your account, there is no going back. This will permanently delete your profile, goals, progress data, and remove you from any buddy matches.
-              </p>
+          <CardContent>
+            <div className="flex items-center justify-between p-4 border border-destructive rounded-lg">
+              <div>
+                <h3 className="font-medium">Delete Account</h3>
+                <p className="text-sm text-muted-foreground">
+                  Permanently delete your account and all associated data
+                </p>
+              </div>
               <Button variant="destructive" onClick={handleDeleteAccount}>
                 <Trash2 className="h-4 w-4 mr-2" />
-                Delete My Account
+                Delete Account
               </Button>
             </div>
           </CardContent>
