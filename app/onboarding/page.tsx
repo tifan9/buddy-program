@@ -12,12 +12,15 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ChevronLeft, ChevronRight, User, Clock, Target, Eye } from 'lucide-react'
+import { Logo } from "@/components/logo"
 import { useRouter } from "next/navigation"
+import { useToast } from "@/hooks/use-toast"
 
 const TOTAL_STEPS = 4
 
 export default function OnboardingPage() {
   const router = useRouter()
+  const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     // Step 1: Personal Info
@@ -40,6 +43,10 @@ export default function OnboardingPage() {
       setCurrentStep(currentStep + 1)
     } else {
       // Complete onboarding
+      toast({
+        title: "Welcome to Accountability Buddy!",
+        description: "Your profile is complete. Let's find you a buddy!",
+      })
       router.push("/dashboard")
     }
   }
@@ -296,7 +303,10 @@ export default function OnboardingPage() {
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <div className="flex items-center justify-between mb-4">
-            <CardTitle>Welcome to AccountaBuddy</CardTitle>
+            <div className="flex items-center space-x-3">
+              <Logo size="sm" />
+              <CardTitle>Welcome to Accountability Buddy</CardTitle>
+            </div>
             <Badge variant="outline">
               Step {currentStep} of {TOTAL_STEPS}
             </Badge>
@@ -321,7 +331,7 @@ export default function OnboardingPage() {
               onClick={handleNext}
               disabled={!isStepValid()}
             >
-              {currentStep === TOTAL_STEPS ? "Finish" : "Next"}
+              {currentStep === TOTAL_STEPS ? "Complete Setup" : "Next"}
               {currentStep !== TOTAL_STEPS && <ChevronRight className="h-4 w-4 ml-2" />}
             </Button>
           </div>

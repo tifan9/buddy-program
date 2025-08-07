@@ -1,8 +1,22 @@
-# AccountaBuddy Platform Documentation
+# Accountability Buddy Platform Documentation
 
 ## Overview
 
-AccountaBuddy is a comprehensive web application designed to help users achieve their goals through accountability partnerships. The platform connects users with like-minded partners, enables goal setting and tracking, and provides tools for communication and progress monitoring.
+Accountability Buddy is a comprehensive web application designed to help users achieve their goals through accountability partnerships. The platform connects users with like-minded partners, enables goal setting and tracking, and provides tools for communication and progress monitoring.
+
+## Brand Identity
+
+### Logo & Name
+- **Name**: Accountability Buddy
+- **Logo**: Two blue human figures representing partnership and mutual support
+- **Color Scheme**: Primary blue (#1E88E6) with supporting colors
+- **Typography**: Clean, modern sans-serif fonts
+
+### Brand Values
+- **Partnership**: Two people working together toward common goals
+- **Accountability**: Mutual responsibility and support
+- **Progress**: Continuous improvement and growth
+- **Community**: Building connections and relationships
 
 ## Table of Contents
 
@@ -170,6 +184,7 @@ app/
 ### Reusable Components
 \`\`\`
 components/
+├── logo.tsx                  # Brand logo component
 ├── app-sidebar.tsx           # Main navigation sidebar
 ├── ui/                       # shadcn/ui components
 │   ├── button.tsx
@@ -486,8 +501,8 @@ CREATE TABLE goals (
 
 ### 1. Clone Repository
 \`\`\`bash
-git clone https://github.com/your-org/accountabuddy-platform.git
-cd accountabuddy-platform
+git clone https://github.com/your-org/accountability-buddy-platform.git
+cd accountability-buddy-platform
 \`\`\`
 
 ### 2. Install Dependencies
@@ -705,10 +720,10 @@ DATABASE_LOGGING=true npm run dev
 - Contribution guidelines
 
 ### Contact
-- **Email**: support@accountabuddy.com
-- **GitHub**: https://github.com/your-org/accountabuddy-platform
-- **Documentation**: https://docs.accountabuddy.com
+- **Email**: support@accountabilitybuddy.com
+- **GitHub**: https://github.com/your-org/accountability-buddy-platform
+- **Documentation**: https://docs.accountabilitybuddy.com
 
 ---
 
-*This documentation is maintained by the AccountaBuddy development team and is updated regularly to reflect the latest features and best practices.*
+*This documentation is maintained by the Accountability Buddy development team and is updated regularly to reflect the latest features and best practices.*

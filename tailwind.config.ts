@@ -1,7 +1,5 @@
 import type { Config } from "tailwindcss";
 
-// all in fixtures is set to tailwind v3 as interims solutions
-
 const config: Config = {
     darkMode: ["class"],
     content: [
@@ -62,7 +60,11 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+        // Brand colors matching the logo
+        'brand-blue': '#1E88E6',
+        'brand-blue-dark': '#1565C0',
+        'brand-blue-light': '#42A5F5'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Target, Users, TrendingUp, Award, ArrowRight, CheckCircle } from 'lucide-react'
+import { Users, TrendingUp, Award, ArrowRight, CheckCircle } from 'lucide-react'
+import { Logo } from "@/components/logo"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -10,12 +11,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Target className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-xl">AccountaBuddy</span>
-          </div>
+          <Logo size="md" />
           <div className="flex items-center space-x-4">
             <Link href="/auth/login">
               <Button variant="ghost">Sign In</Button>
@@ -30,6 +26,9 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center max-w-4xl">
+          <div className="mb-8">
+            <Logo size="lg" showText={false} className="justify-center mb-6" />
+          </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Achieve Your Goals with an{" "}
             <span className="text-primary">Accountability Buddy</span>
@@ -67,7 +66,7 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
                 <Users className="h-10 w-10 text-primary mb-2" />
@@ -83,7 +82,9 @@ export default function HomePage() {
             
             <Card>
               <CardHeader>
-                <Target className="h-10 w-10 text-primary mb-2" />
+                <div className="w-10 h-10 mb-2">
+                  <Logo size="md" showText={false} />
+                </div>
                 <CardTitle>Goal Tracking</CardTitle>
               </CardHeader>
               <CardContent>
@@ -103,19 +104,6 @@ export default function HomePage() {
                 <CardDescription>
                   Visualize your progress with calendar heatmaps, streak tracking, 
                   and detailed analytics to stay motivated.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <Award className="h-10 w-10 text-primary mb-2" />
-                <CardTitle>Achievement Badges</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Earn badges for consistency, milestones, and helping your buddy 
-                  succeed. Celebrate every victory along the way.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -208,13 +196,9 @@ export default function HomePage() {
               </div>
             </div>
             <div className="text-center">
-              <Image
-                src="/placeholder.svg?height=400&width=400&text=Success+Together"
-                alt="Success illustration"
-                width={400}
-                height={400}
-                className="mx-auto"
-              />
+              <div className="w-80 h-80 mx-auto">
+                <Logo size="lg" showText={false} className="justify-center w-full h-full" />
+              </div>
             </div>
           </div>
         </div>
@@ -243,12 +227,7 @@ export default function HomePage() {
       <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-                <Target className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="font-semibold">AccountaBuddy</span>
-            </div>
+            <Logo size="sm" className="mb-4 md:mb-0" />
             <div className="flex items-center space-x-6 text-sm text-muted-foreground">
               <Link href="/privacy" className="hover:text-foreground">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-foreground">Terms of Service</Link>
@@ -256,7 +235,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="mt-4 pt-4 border-t text-center text-sm text-muted-foreground">
-            © 2024 AccountaBuddy. All rights reserved.
+            © 2024 Accountability Buddy. All rights reserved.
           </div>
         </div>
       </footer>

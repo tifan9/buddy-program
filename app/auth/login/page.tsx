@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
+import { Logo } from "@/components/logo"
 import Link from "next/link"
-import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/hooks/use-toast"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -16,16 +18,30 @@ export default function LoginPage() {
     email: "",
     password: ""
   })
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const { toast } = useToast()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle login logic here
-    console.log("Login attempt:", formData)
+    setIsLoading(true)
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false)
+      toast({
+        title: "Welcome back!",
+        description: "You've been successfully logged in.",
+      })
+      router.push("/dashboard")
+    }, 1000)
   }
 
   const handleGoogleLogin = () => {
-    // Handle Google OAuth login
-    console.log("Google login")
+    toast({
+      title: "Google Login",
+      description: "Google OAuth integration would be implemented here.",
+    })
   }
 
   return (
@@ -34,19 +50,15 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-12 flex-col justify-center">
         <div className="max-w-md mx-auto text-center">
           <div className="mb-8">
-            <Image
-              src="/placeholder.svg?height=200&width=200&text=Motivation"
-              alt="Motivational illustration"
-              width={200}
-              height={200}
-              className="mx-auto mb-6"
-            />
+            <div className="w-32 h-32 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
+              <Logo size="lg" showText={false} className="text-white" />
+            </div>
           </div>
           <blockquote className="text-2xl font-semibold mb-4">
             "Small steps daily = big changes."
           </blockquote>
           <p className="text-lg opacity-90">
-            Join thousands of people achieving their goals with accountability partners.
+            Welcome back to your accountability journey. Your goals are waiting for you.
           </p>
         </div>
       </div>
@@ -55,9 +67,12 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-8">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
+            <div className="mb-4">
+              <Logo size="md" className="justify-center" />
+            </div>
             <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
             <CardDescription>
-              Sign in to your AccountaBuddy account
+              Sign in to your Accountability Buddy account
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -111,8 +126,8 @@ export default function LoginPage() {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full">
-                Sign In
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 

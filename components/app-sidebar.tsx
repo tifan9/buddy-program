@@ -11,7 +11,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LayoutDashboard, Target, Users, TrendingUp, Award, Settings, LogOut, ChevronUp } from 'lucide-react'
+import { Logo } from "@/components/logo"
 import Link from "next/link"
 
 const menuItems = [
@@ -58,11 +58,8 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center space-x-2 px-2 py-4">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <Target className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <span className="font-bold text-lg">AccountaBuddy</span>
+        <div className="px-2 py-4">
+          <Logo size="md" />
         </div>
       </SidebarHeader>
       <SidebarContent>
