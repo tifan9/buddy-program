@@ -59,7 +59,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="px-2 py-4">
-          <Logo size="md" />
+          <Logo size="lg" />
         </div>
       </SidebarHeader>
       <SidebarContent>

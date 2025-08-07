@@ -11,7 +11,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Logo size="md" />
+          <Logo size="lg" />
           <div className="flex items-center space-x-4">
             <Link href="/auth/login">
               <Button variant="ghost">Sign In</Button>
@@ -27,7 +27,7 @@ export default function HomePage() {
       <section className="py-20 px-4">
         <div className="container mx-auto text-center max-w-4xl">
           <div className="mb-8">
-            <Logo size="lg" showText={false} className="justify-center mb-6" />
+            <Logo size="xl" showText={false} variant="icon" className="justify-center mb-6 w-32 h-32 mx-auto" />
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Achieve Your Goals with an{" "}
@@ -82,9 +82,7 @@ export default function HomePage() {
             
             <Card>
               <CardHeader>
-                <div className="w-10 h-10 mb-2">
-                  <Logo size="md" showText={false} />
-                </div>
+                <Logo size="lg" showText={false} variant="icon" className="mb-2" />
                 <CardTitle>Goal Tracking</CardTitle>
               </CardHeader>
               <CardContent>
@@ -196,8 +194,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="text-center">
-              <div className="w-80 h-80 mx-auto">
-                <Logo size="lg" showText={false} className="justify-center w-full h-full" />
+              <div className="w-80 h-80 mx-auto flex items-center justify-center">
+                <Logo size="xl" showText={false} variant="icon" className="w-64 h-64" />
               </div>
             </div>
           </div>
@@ -227,7 +225,7 @@ export default function HomePage() {
       <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <Logo size="sm" className="mb-4 md:mb-0" />
+            <Logo size="md" className="mb-4 md:mb-0" />
             <div className="flex items-center space-x-6 text-sm text-muted-foreground">
               <Link href="/privacy" className="hover:text-foreground">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-foreground">Terms of Service</Link>

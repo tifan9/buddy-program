@@ -50,8 +50,8 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-12 flex-col justify-center">
         <div className="max-w-md mx-auto text-center">
           <div className="mb-8">
-            <div className="w-32 h-32 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
-              <Logo size="lg" showText={false} className="text-white" />
+            <div className="w-32 h-32 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center p-6">
+              <Logo size="xl" showText={false} variant="icon" className="text-white filter brightness-0 invert" />
             </div>
           </div>
           <blockquote className="text-2xl font-semibold mb-4">
@@ -68,7 +68,7 @@ export default function LoginPage() {
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mb-4">
-              <Logo size="md" className="justify-center" />
+              <Logo size="lg" className="justify-center" />
             </div>
             <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
             <CardDescription>

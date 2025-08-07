@@ -304,7 +304,7 @@ export default function OnboardingPage() {
         <CardHeader>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
-              <Logo size="sm" />
+              <Logo size="md" />
               <CardTitle>Welcome to Accountability Buddy</CardTitle>
             </div>
             <Badge variant="outline">
